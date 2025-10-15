@@ -10,6 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
+import dj_database_url
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,9 +32,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-nhf4g6j2t&3)+r7y+p)fmte539_xg#6f=ux#wr*-c5ty7_2(^#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = ['*']  # Ou mets ton nom de domaine si tu veux être strict
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -72,12 +81,20 @@ WSGI_APPLICATION = 'testapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+}"""
+DATABASES = {
+    'default': dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600,
+        ssl_require=False
+    )
 }
+
 
 
 # Password validation
@@ -120,3 +137,16 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+import dj_database_url
+import os
+
+DATABASES['default'] = dj_database_url.config(
+    default='sqlite:///' + str(BASE_DIR / "db.sqlite3")
+)
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+

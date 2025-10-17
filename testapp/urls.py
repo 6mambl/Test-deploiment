@@ -28,7 +28,7 @@ from django.urls import path
 from django.http import HttpResponse
 
 def home(request):
-    return HttpResponse("<h1>Hello depuis Railway 🚄</h1>")
+    return HttpResponse("<h1>Hello Mr Thomas, voici notre première sortie</h1>")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
